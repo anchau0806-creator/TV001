@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tarot4u</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;1,6..12,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <style>
+      @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+      }
+      @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes zoom-in {
+          from { transform: scale(0.9); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+      }
+      @keyframes subtle-pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.02); }
+      }
+      .animate-fade-in { animation: fade-in 0.6s ease-out forwards; }
+      .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
+      .animate-zoom-in { animation: zoom-in 0.3s ease-out forwards; }
+      .animate-subtle-pulse { animation: subtle-pulse 2.5s infinite ease-in-out; }
+
+      /* --- THEME COLORS --- */
+      /* Default/Mysterious Theme */
+      :root, [data-theme="mysterious"] {
+        --font-body: 'Nunito Sans', sans-serif;
+        --font-display: 'Playfair Display', serif;
+
+        --color-bg: #0f172a; /* slate-900 */
+        --color-text: #e2e8f0; /* slate-200 */
+        --color-text-muted: #94a3b8; /* slate-400 */
+        --color-primary: #818cf8; /* indigo-400 */
+        --color-primary-hover: #a5b4fc; /* indigo-300 */
+        --color-primary-strong: #6366f1; /* indigo-500 */
+        --color-primary-strong-hover: #4f46e5; /* indigo-600 */
+        --color-secondary: #c084fc; /* purple-400 */
+        --color-secondary-strong: #a855f7; /* purple-600 */
+        --color-accent: #5eead4; /* teal-300 */
+        --color-accent-strong: #14b8a6; /* teal-500 */
+        --color-surface: #1e293b; /* slate-800 */
+        --color-surface-rgb: 30, 41, 59;
+        --color-surface-light: #334155; /* slate-700 */
+        --color-border: #334155; /* slate-700 */
+        --color-danger: #f87171; /* red-400 */
+        --color-danger-strong: #dc2626; /* red-600 */
+        --color-warning: #facc15; /* yellow-400 */
+        --opacity-surface: 0.6;
+      }
+
+      /* Warm Theme */
+      [data-theme="warm"] {
+        --color-bg: #291d1d;
+        --color-text: #fef3c7; /* amber-100 */
+        --color-text-muted: #d6a666;
+        --color-primary: #f59e0b; /* amber-500 */
+        --color-primary-hover: #fbbf24; /* amber-400 */
+        --color-primary-strong: #d97706; /* amber-600 */
+        --color-primary-strong-hover: #b45309; /* amber-700 */
+        --color-secondary: #f97316; /* orange-500 */
+        --color-secondary-strong: #ea580c; /* orange-600 */
+        --color-accent: #ef4444; /* red-500 */
+        --color-accent-strong: #dc2626; /* red-600 */
+        --color-surface: #402e2a;
+        --color-surface-rgb: 64, 46, 42;
+        --color-surface-light: #573f3a;
+        --color-border: #573f3a;
+        --color-danger: #ef4444; /* red-500 */
+        --color-danger-strong: #b91c1c; /* red-700 */
+        --color-warning: #f59e0b; /* amber-500 */
+      }
+
+      /* Vibrant Theme */
+      [data-theme="vibrant"] {
+        --color-bg: #111827; /* gray-900 */
+        --color-text: #f9fafb; /* gray-50 */
+        --color-text-muted: #9ca3af; /* gray-400 */
+        --color-primary: #22d3ee; /* cyan-400 */
+        --color-primary-hover: #67e8f9; /* cyan-300 */
+        --color-primary-strong: #06b6d4; /* cyan-500 */
+        --color-primary-strong-hover: #0891b2; /* cyan-600 */
+        --color-secondary: #d946ef; /* fuchsia-500 */
+        --color-secondary-strong: #c026d3; /* fuchsia-600 */
+        --color-accent: #a3e635; /* lime-400 */
+        --color-accent-strong: #84cc16; /* lime-500 */
+        --color-surface: #1f2937; /* gray-800 */
+        --color-surface-rgb: 31, 41, 55;
+        --color-surface-light: #374151; /* gray-700 */
+        --color-border: #374151; /* gray-700 */
+        --color-danger: #fb7185; /* rose-400 */
+        --color-danger-strong: #e11d48; /* rose-600 */
+        --color-warning: #eab308; /* yellow-500 */
+      }
+
+      /* Gentle Theme */
+      [data-theme="gentle"] {
+        --color-bg: #2d3748; 
+        --color-text: #e2e8f0; /* slate-200 */
+        --color-text-muted: #a0aec0;
+        --color-primary: #fbb6ce; /* rose-300 */
+        --color-primary-hover: #f9a8d4; /* pink-300 */
+        --color-primary-strong: #f472b6; /* pink-400 */
+        --color-primary-strong-hover: #ec4899; /* pink-500 */
+        --color-secondary: #a7f3d0; /* green-200 */
+        --color-secondary-strong: #6ee7b7; /* green-300 */
+        --color-accent: #bae6fd; /* sky-200 */
+        --color-accent-strong: #7dd3fc; /* sky-300 */
+        --color-surface: #4a5568; 
+        --color-surface-rgb: 74, 85, 104;
+        --color-surface-light: #64748b; /* slate-600 */
+        --color-border: #64748b; /* slate-600 */
+        --color-danger: #fca5a5; /* red-300 */
+        --color-danger-strong: #ef4444; /* red-500 */
+        --color-warning: #fcd34d; /* amber-300 */
+      }
+
+      /* Dynamic Theme */
+      [data-theme="dynamic"] {
+        --color-bg: #000000;
+        --color-text: #ffffff;
+        --color-text-muted: #a1a1aa; /* zinc-400 */
+        --color-primary: #facc15; /* yellow-400 */
+        --color-primary-hover: #fde047; /* yellow-300 */
+        --color-primary-strong: #eab308; /* yellow-500 */
+        --color-primary-strong-hover: #ca8a04; /* yellow-600 */
+        --color-secondary: #3b82f6; /* blue-500 */
+        --color-secondary-strong: #2563eb; /* blue-600 */
+        --color-accent: #dc2626; /* red-600 */
+        --color-accent-strong: #b91c1c; /* red-700 */
+        --color-surface: #18181b; /* zinc-900 */
+        --color-surface-rgb: 24, 24, 27;
+        --color-surface-light: #27272a; /* zinc-800 */
+        --color-border: #27272a; /* zinc-800 */
+        --color-danger: #f87171; /* red-400 */
+        --color-danger-strong: #dc2626; /* red-600 */
+        --color-warning: #facc15; /* yellow-400 */
+      }
+
+      body {
+        font-family: var(--font-body);
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-display);
+      }
+
+      #background-layer {
+          background-size: cover;
+          background-position: center;
+          transition: opacity 0.7s ease-in-out;
+      }
+      #background-layer::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-color: #000;
+          opacity: 0.5;
+      }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.21.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-[var(--color-bg)] text-[var(--color-text)]">
+    <div id="background-layer" class="fixed inset-0 opacity-0"></div>
+    <div id="root" class="relative z-10"></div>
+  </body>
+</html>
